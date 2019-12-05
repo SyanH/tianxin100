@@ -1,0 +1,20 @@
+{
+  "name": "tianxin100/wechat",
+  "description": "tianxin100",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "jinjingjing"
+    }
+  ],
+  "require": {
+    "php": ">=5.4",
+    "doctrine/cache": "~1.5.4",
+    "curl/curl": "^1.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "tianxin100\\wechat\\": "src/"
+    }
+  }
+}
