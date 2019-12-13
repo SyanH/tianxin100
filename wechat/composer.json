@@ -15,6 +15,9 @@
   "autoload": {
     "psr-4": {
       "tianxin100\\wechat\\": "src/"
-    }
+    },
+    "files": [
+      "wechat.class.php"
+    ]
   }
 }
