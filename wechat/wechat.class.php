@@ -550,7 +550,7 @@ class core_lib_wechat
 		if (empty($msg))
 			$msg = $this->_msg;
 		$xmldata=  $this->xml_encode($msg);
-		\Yii::error(json_encode($xmldata));
+		// \Yii::error(json_encode($xmldata));
 		$this->log($xmldata);
 		if ($return)
 			return $xmldata;
@@ -687,6 +687,13 @@ class core_lib_wechat
 			$appid = $this->appid;
 			$appsecret = $this->appsecret;
 		}
+		$accessToken = \Yii::$app->cache->get('wechat_access_token');
+		
+		//\Yii::error('access_token_old: ' .$accessToken);
+	        if ($accessToken) {
+		    $this->access_token = $accessToken;
+	            return $accessToken;
+	        }
 		//TODO: get the cache access_token
 		$result = $this->http_get(self::API_URL_PREFIX.self::AUTH_URL.'appid='.$appid.'&secret='.$appsecret);
 		if ($result)
@@ -700,6 +707,8 @@ class core_lib_wechat
 			$this->access_token = $json['access_token'];
 			$expire = $json['expires_in'] ? intval($json['expires_in'])-100 : 3600;
 			//TODO: cache access_token
+			//\Yii::error('access_token_new: ' .$json['access_token']);
+			\Yii::$app->cache->set('wechat_access_token', $json['access_token'],$expire);
 			return $this->access_token;
 		}
 		return false;
