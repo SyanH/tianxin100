@@ -142,24 +142,25 @@ class Wechat
      */
     public function getAccessToken($refresh = false, $expires = 3600)
     {
-        $cacheKey = md5("{$this->appId}@access_token");
-        $accessToken = $this->cache->fetch($cacheKey);
-        $accessTokenOk = $this->checkAccessToken($accessToken);
-        if (!$accessToken || $refresh || !$accessTokenOk) {
-            $api = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->appSecret}";
-            $this->curl->get($api);
-            $res = json_decode($this->curl->response, true);
-            if (empty($res['access_token'])) {
-                $this->errCode = isset($res['errcode']) ? $res['errcode'] : null;
-                $this->errMsg = isset($res['errmsg']) ? $res['errmsg'] : null;
-                return false;
-            }
-            $accessToken = $res['access_token'];
-            $this->cache->save($cacheKey, $accessToken, $expires);
-            return $accessToken;
-        } else {
-            return $accessToken;
-        }
+        // $cacheKey = md5("{$this->appId}@access_token");
+        // $accessToken = $this->cache->fetch($cacheKey);
+        // $accessTokenOk = $this->checkAccessToken($accessToken);
+        // if (!$accessToken || $refresh || !$accessTokenOk) {
+        //     $api = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->appSecret}";
+        //     $this->curl->get($api);
+        //     $res = json_decode($this->curl->response, true);
+        //     if (empty($res['access_token'])) {
+        //         $this->errCode = isset($res['errcode']) ? $res['errcode'] : null;
+        //         $this->errMsg = isset($res['errmsg']) ? $res['errmsg'] : null;
+        //         return false;
+        //     }
+        //     $accessToken = $res['access_token'];
+        //     $this->cache->save($cacheKey, $accessToken, $expires);
+        //     return $accessToken;
+        // } else {
+        //     return $accessToken;
+        // }
+        return get_wechat_access_token($this->appId, $this->appSecret);
     }
 
     private function checkAccessToken($accessToken)
