@@ -9,7 +9,7 @@
   ],
   "require": {
     "php": ">=5.4",
-    "doctrine/cache": "~1.5.4",
+    "doctrine/cache": "~1.10.2",
     "curl/curl": "^1.6"
   },
   "autoload": {
