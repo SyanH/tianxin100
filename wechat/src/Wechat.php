@@ -3,7 +3,6 @@
 namespace tianxin100\wechat;
 
 use Curl\Curl;
-use Doctrine\Common\Cache\FilesystemCache;
 
 /**
  * Created by IntelliJ IDEA.
@@ -47,30 +46,12 @@ class Wechat
      */
     public $tplMsg;
 
-
-    /**
-     * 缓存路径
-     *
-     * @var string
-     */
-    public $cachePath;
-
-
-    /**
-     * 缓存组件
-     *
-     * @var FilesystemCache
-     */
-    public $cache;
-
-
     /**
      * CURL
      *
      * @var Curl
      */
     public $curl;
-
 
     /**
      * 初始化
@@ -104,16 +85,13 @@ class Wechat
         $this->apiKey = isset($args['apiKey']) ? $args['apiKey'] : null; //"cdf85c09649e8c1de26c4e214a26f4c8";
         $this->certPem = isset($args['certPem']) ? $args['certPem'] : null;
         $this->keyPem = isset($args['keyPem']) ? $args['keyPem'] : null;
-        $this->cachePath = isset($args['cachePath']) ? $args['cachePath'] : null;
+	    $this->serialNo =isset($args['serialNo']) ? $args['serialNo'] : null; // "1298152201";
         return $this->init();
     }
 
 
     private function init()
     {
-        if (!$this->cachePath)
-            $this->cachePath = dirname(__DIR__) . '/runtime/cache';
-        $this->cache = new FilesystemCache($this->cachePath);
         $this->curl = new Curl();
         $this->curl->setOpt(CURLOPT_SSL_VERIFYHOST, false);
         $this->curl->setOpt(CURLOPT_SSL_VERIFYPEER, false);
@@ -142,24 +120,6 @@ class Wechat
      */
     public function getAccessToken($refresh = false, $expires = 3600)
     {
-        // $cacheKey = md5("{$this->appId}@access_token");
-        // $accessToken = $this->cache->fetch($cacheKey);
-        // $accessTokenOk = $this->checkAccessToken($accessToken);
-        // if (!$accessToken || $refresh || !$accessTokenOk) {
-        //     $api = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->appSecret}";
-        //     $this->curl->get($api);
-        //     $res = json_decode($this->curl->response, true);
-        //     if (empty($res['access_token'])) {
-        //         $this->errCode = isset($res['errcode']) ? $res['errcode'] : null;
-        //         $this->errMsg = isset($res['errmsg']) ? $res['errmsg'] : null;
-        //         return false;
-        //     }
-        //     $accessToken = $res['access_token'];
-        //     $this->cache->save($cacheKey, $accessToken, $expires);
-        //     return $accessToken;
-        // } else {
-        //     return $accessToken;
-        // }
         return get_wechat_access_token($this->appId, $this->appSecret);
     }
 
